@@ -1,0 +1,15 @@
+﻿@model VideoVerhuur_ASP.net_MVC_Test.Models.Klant
+
+@{
+    ViewBag.Title = "Bevestiging";
+}
+
+<div class="row">
+
+    @if (TempData["LoginValid"] != null)
+    {
+        <div class="alert alert-success">@TempData["LoginValid"]</div>
+    }
+
+    @Html.ActionLink("Ga naar verhuringen", "VerhuurIndex", null, new { @class = "btn btn-primary"})
+</div>
