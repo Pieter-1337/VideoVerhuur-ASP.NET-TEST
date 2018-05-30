@@ -147,6 +147,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AfrekenenModel.cs" />
     <Compile Include="Models\Film.cs">
       <DependentUpon>VideoVerhuurModel.tt</DependentUpon>
     </Compile>
@@ -245,6 +246,8 @@
     <Content Include="Views\Home\VerhuurIndex.cshtml" />
     <Content Include="Views\Home\GenreDetail.cshtml" />
     <Content Include="Views\Home\Mandje.cshtml" />
+    <Content Include="Views\Home\Verwijderen.cshtml" />
+    <Content Include="Views\Home\Afrekenen.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

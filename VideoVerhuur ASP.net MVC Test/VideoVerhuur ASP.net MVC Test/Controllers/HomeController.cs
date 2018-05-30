@@ -24,9 +24,22 @@ namespace VideoVerhuur_ASP.net_MVC_Test.Controllers
         }
 
 
-        public ActionResult Index()
+        public ActionResult Index(string Betaling)
         {
-            
+            if(Betaling != null)
+            {
+                foreach(string nummer in Session)
+                {
+                    if (int.TryParse(nummer, out int id))
+                    {
+
+                        var klant = (VideoVerhuur_ASP.net_MVC_Test.Models.Klant)Session["klant"];
+                        _videoVerhuurRepository.Verhuring(id, klant);
+                    }
+                }
+                TempData["Betaling"] = Betaling;
+            }
+
             Session.Clear();
             return View();
         }
@@ -37,7 +50,7 @@ namespace VideoVerhuur_ASP.net_MVC_Test.Controllers
             var klant = _videoVerhuurRepository.GetKlant(naam, postcode);
             if(klant != null)
             {
-                Session["KlantNr"] = klant.KlantNr;
+                Session["Klant"] = klant;
                
                 TempData["LoginValid"] = "Welkom " + klant.Naam + " " + klant.Voornaam;
                 return View(klant);
@@ -90,15 +103,46 @@ namespace VideoVerhuur_ASP.net_MVC_Test.Controllers
         }
 
         public ActionResult Verwijderen(string id)
+        {   
+            var film = _videoVerhuurRepository.GetFilm(Convert.ToInt32(id));
+            return View(film);
+        }
+
+        public ActionResult VerwijderenConfirm(string id)
         {
-            if(id != null)
+            if (id != null)
             {
-                Session.Remove(id); 
+                Session.Remove(id);
             }
 
             return RedirectToAction("Mandje", "Home");
         }
 
+
+        public ActionResult Afrekenen()
+        {
+            decimal teBetalen = 0;
+            var afrekenenModel = new AfrekenenModel();
+            afrekenenModel.films = new List<Film>();
+            foreach (string nummer in Session)
+            {
+                int BandNr;
+                if (int.TryParse(nummer, out BandNr))
+                {
+                    Film film = _videoVerhuurRepository.GetFilm(BandNr);
+                    if (film != null)
+                    {
+                        afrekenenModel.films.Add(film);
+                        teBetalen += film.Prijs;
+                    }
+                }
+            }
+
+            var klant = (VideoVerhuur_ASP.net_MVC_Test.Models.Klant)Session["klant"];
+            afrekenenModel.klant = _videoVerhuurRepository.GetKlantById(klant.KlantNr);
+            ViewBag.teBetalen = teBetalen;
+            return View(afrekenenModel);
+        }
 
 
         public ActionResult About()

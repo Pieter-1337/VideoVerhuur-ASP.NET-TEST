@@ -39,6 +39,13 @@ namespace VideoVerhuur_ASP.net_MVC_Test.Repositorys
             }
         }
 
+
+        public Klant GetKlantById(int? id)
+        {
+            var Klant = (from klant in db.Klants where klant.KlantNr == id select klant).FirstOrDefault();
+            return Klant;
+        }
+
         public List<Genre> GetGenres()
         {
             return db.Genres.OrderBy(g => g.GenreSoort).ToList();
@@ -54,6 +61,24 @@ namespace VideoVerhuur_ASP.net_MVC_Test.Repositorys
         public Film GetFilm(int? id)
         {
             return db.Films.Find(id);
+        }
+
+        public void Verhuring(int? id, Klant klant)
+        {
+            var film = GetFilm(id);
+
+            db.Verhuurs.Add(new Verhuur
+            {
+                BandNr = film.BandNr,
+                KlantNr = klant.KlantNr,
+                VerhuurDatum = new DateTime(System.DateTime.Now.Ticks),   
+            });
+
+            film.InVoorraad--;
+            film.UitVoorraad++;
+            
+
+            db.SaveChanges();
         }
     }
 }

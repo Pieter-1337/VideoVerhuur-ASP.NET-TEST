@@ -32,13 +32,14 @@
     <div class="jumbotron page-header" style="margin-top: -50px; height:315px;">
         <div class="container">
             <img src="~/Images/videoVerhuur.jpg" class="img-responsive img-rounded" style="height: 200px; margin-top: -50px;" />
-            @if (Session["klantNr"] == null)
+            @if (Session["klant"] == null)
              {
                 <h2 font-weight:600">Eerst aanmelden om te kunnen huren</h2>
-             }
+            }
             else
             {
-                <h3>U bent ingelogd als @Session["klantNaam"] @Session["klantVoornaam"].</h3>
+                var klant = (VideoVerhuur_ASP.net_MVC_Test.Models.Klant)Session["Klant"];
+                <h3>U bent ingelogd als @klant.Voornaam @klant.Naam</h3>
                 <a href="@Url.Action("Index", "Home")" class="btn btn-primary">Uitloggen</a>
             }
                 @if (Session.Keys.Count > 1)

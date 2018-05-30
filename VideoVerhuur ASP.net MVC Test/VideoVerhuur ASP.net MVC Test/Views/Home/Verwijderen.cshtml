@@ -1,0 +1,11 @@
+﻿@model VideoVerhuur_ASP.net_MVC_Test.Models.Film
+
+@{
+    ViewBag.Title = "Verwijderen";
+}
+
+<h2>Verwijder @Model.Titel</h2>
+
+<h3>Ben je zeker dat je @Model.Titel niet wenst te huren?</h3>
+<p>@Html.ActionLink("Verwijder", "VerwijderenConfirm", "Home", new { id = Model.BandNr}, new { @class = "btn btn-danger"}) @Html.ActionLink("Terug naar mandje", "Mandje", "Home", null, new { @class = "btn btn-primary"})</p>
+
